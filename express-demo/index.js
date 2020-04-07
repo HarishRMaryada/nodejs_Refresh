@@ -1,3 +1,4 @@
+const config = require('config')
 const morgan = require('morgan')
 const helmet = require('helmet')
 const express = require('express')
@@ -7,10 +8,18 @@ const authentication = require('./middlewares/authentication')
 
 const port = process.env.PORT || 3000
 
+console.log(config.get('name'))
+console.log(config.get('mail.password'))
+console.log(app.get('env'))
+
+
 
 app.use(express.json())
 app.use(helmet())
-app.use(morgan('tiny'))
+
+if(app.get('env') === 'development') 
+    app.use(morgan('tiny'))
+
 app.use(logger)
 app.use(authentication)
 app.get('/', (req, res) => res.send('Hello World!'))
